@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Daily Work Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    textarea { width: 100%; height: 150px; margin: 10px 0; }
+    button { padding: 10px 20px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>Daily Work Report</h2>
+  <textarea id="workPoints" placeholder="Enter each point on a new line"></textarea>
+  <button onclick="sendReport()">Send Report</button>
+
+    <script>
+        function sendReport() {
+            const today = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+            const subject = encodeURIComponent(`Work Report : ${today}`);
+
+            const workLines = document.getElementById('workPoints').value
+            .split('\n')
+            .map(line => `• ${line}`)
+            .join('\n');
+
+            const body = encodeURIComponent(`Work done:\n${workLines}`);
+
+            //const to = "issacthampi005@gmail.com";
+            //const cc = ",";
+            //const bcc = "";
+            //const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&cc=${cc}&bcc=${bcc}&su=${subject}&body=${body}`;
+
+            const to = "issacthampi005@gmail.com";
+            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`;
+            
+            window.open(gmailUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
