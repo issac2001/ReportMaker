@@ -1,40 +1,247 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Daily Work Report</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MailMyDay</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" href="ReportMaker.png" type="image/png">
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    textarea { width: 100%; height: 150px; margin: 10px 0; }
-    button { padding: 10px 20px; cursor: pointer; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 600px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      animation: fadeIn 0.6s ease-out;
+    }
+    
+    .header {
+      background: linear-gradient(to right, #4b6cb7, #182848);
+      color: white;
+      padding: 25px;
+      text-align: center;
+      position: relative;
+    }
+    
+    .header h2 {
+      font-weight: 600;
+      font-size: 28px;
+      margin-bottom: 5px;
+    }
+    
+    .header p {
+      opacity: 0.9;
+      font-size: 14px;
+    }
+    
+    .header i {
+      position: absolute;
+      top: 25px;
+      left: 25px;
+      font-size: 24px;
+    }
+    
+    .content {
+      padding: 30px;
+    }
+    
+    .input-container {
+      margin-bottom: 25px;
+    }
+    
+    .input-container label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 500;
+      color: #333;
+      font-size: 16px;
+    }
+    
+    textarea {
+      width: 100%;
+      height: 200px;
+      padding: 15px;
+      border: 2px solid #e1e5ee;
+      border-radius: 12px;
+      resize: none;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+    
+    textarea:focus {
+      outline: none;
+      border-color: #4b6cb7;
+      box-shadow: 0 6px 12px rgba(75, 108, 183, 0.15);
+      transform: translateY(-2px);
+    }
+    
+    .button-container {
+      text-align: center;
+    }
+    
+    button {
+      background: linear-gradient(to right, #4b6cb7, #182848);
+      color: white;
+      border: none;
+      padding: 16px 40px;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 15px rgba(75, 108, 183, 0.4);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(75, 108, 183, 0.6);
+    }
+    
+    button:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 10px rgba(75, 108, 183, 0.4);
+    }
+    
+    button i {
+      margin-right: 10px;
+      font-size: 20px;
+    }
+    
+    .instructions {
+      margin-top: 25px;
+      padding: 15px;
+      background: #f0f4ff;
+      border-radius: 12px;
+      font-size: 14px;
+      color: #555;
+    }
+    
+    .instructions p {
+      margin-bottom: 8px;
+    }
+    
+    .instructions i {
+      color: #4b6cb7;
+      margin-right: 8px;
+    }
+    
+    .date-display {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #777;
+      font-weight: 500;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        border-radius: 15px;
+      }
+      
+      .header {
+        padding: 20px;
+      }
+      
+      .content {
+        padding: 20px;
+      }
+      
+      button {
+        width: 100%;
+        padding: 14px;
+      }
+    }
   </style>
 </head>
 <body>
-  <h2>Daily Work Report</h2>
-  <textarea id="workPoints" placeholder="Enter each point on a new line"></textarea>
-  <button onclick="sendReport()">Send Report</button>
+  <div class="container">
+    <div class="header">
+      <i class="fas fa-clipboard-list"></i>
+      <h2>Daily Work Report</h2>
+      <p>Share your daily accomplishments with your team</p>
+    </div>
+    
+    <div class="content">
+      <div class="input-container">
+        <label for="workPoints"><i class="fas fa-tasks"></i> Today's Work Items</label>
+        <textarea id="workPoints" placeholder="Enter each task or accomplishment on a new line..."></textarea>
+      </div>
+      
+      <div class="button-container">
+        <button onclick="sendReport()">
+          <i class="fas fa-paper-plane"></i> Send Report
+        </button>
+      </div>
+      
+      <div class="date-display" id="dateDisplay"></div>
+      
+      <div class="instructions">
+        <p><i class="fas fa-info-circle"></i> Each line will be converted into a bullet point</p>
+        <p><i class="fas fa-lightbulb"></i> Be specific about your accomplishments and progress</p>
+      </div>
+    </div>
+  </div>
 
-    <script>
-        function sendReport() {
-            const today = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
-            const subject = encodeURIComponent(`Work Report : ${today}`);
+  <script>
+    // Display today's date
+    const today = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('dateDisplay').textContent = today.toLocaleDateString('en-US', options);
+    
+    function sendReport() {
+        const today = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+        const subject = encodeURIComponent(`Work Report : ${today}`);
 
-            const workLines = document.getElementById('workPoints').value
-            .split('\n')
-            .map(line => `• ${line}`)
-            .join('\n');
+        const workLines = document.getElementById('workPoints').value
+        .split('\n')
+        .map(line => `• ${line}`)
+        .join('\n');
 
-            const body = encodeURIComponent(`Work done:\n${workLines}`);
+        const body = encodeURIComponent(`Work done:\n${workLines}`);
 
-            //const to = "issacthampi005@gmail.com";
-            //const cc = ",";
-            //const bcc = "";
-            //const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&cc=${cc}&bcc=${bcc}&su=${subject}&body=${body}`;
+        //const to = "issacthampi005@gmail.com";
+        //const cc = ",";
+        //const bcc = "";
+        //const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&cc=${cc}&bcc=${bcc}&su=${subject}&body=${body}`;
 
-            const to = "issacthampi005@gmail.com";
-            const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`;
-            
-            window.open(gmailUrl, '_blank');
-        }
-    </script>
+        const to = "issacthampi005@gmail.com";
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`;
+        
+        window.open(gmailUrl, '_blank');
+    }
+  </script>
 </body>
 </html>
