@@ -220,27 +220,41 @@
     const today = new Date();
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     document.getElementById('dateDisplay').textContent = today.toLocaleDateString('en-US', options);
-    
     function sendReport() {
-        const today = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
-        const subject = encodeURIComponent(`Work Report : ${today}`);
+      const today = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+      const subject = encodeURIComponent(`Work Report : ${today}`);
 
-        const workLines = document.getElementById('workPoints').value
-        .split('\n')
-        .map(line => `• ${line}`)
-        .join('\n');
+      const workLines = document.getElementById('workPoints').value
+          .split('\n')
+          .map(line => `• ${line}`)
+          .join('\n');
 
-        const body = encodeURIComponent(`Work done:\n${workLines}`);
+      const body = encodeURIComponent(`Work done:\n${workLines}`);
+      const to = "issacthampi005@gmail.com";
+      //const cc = ",";
+      //const bcc = "";
+      //const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&cc=${cc}&bcc=${bcc}&su=${subject}&body=${body}`;
 
-        //const to = "issacthampi005@gmail.com";
-        //const cc = ",";
-        //const bcc = "";
-        //const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&cc=${cc}&bcc=${bcc}&su=${subject}&body=${body}`;
+      const userAgent = navigator.userAgent.toLowerCase();
+      const isMobile = /mobi|android|iphone|ipad|ipod/.test(userAgent);
+      const isAndroid = /android/.test(userAgent);
 
-        const to = "issacthampi005@gmail.com";
-        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`;
-        
-        window.open(gmailUrl, '_blank');
+      const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`;
+      const mailtoUrl = `mailto:${to}?subject=${subject}&body=${body}`;
+      const gmailAppUrl = `googlegmail://co?to=${to}&subject=${subject}&body=${body}`;
+
+      if (isMobile) {
+          if (isAndroid) {
+              window.location.href = gmailAppUrl;
+              setTimeout(() => {
+                  window.location.href = mailtoUrl;
+              }, 1000);
+          } else {
+              window.location.href = mailtoUrl;
+          }
+      } else {
+          window.open(gmailWebUrl, '_blank');
+      }
     }
   </script>
 </body>
