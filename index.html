@@ -61,10 +61,12 @@
     
     .content {
       padding: 30px;
+      padding-bottom: 20px;
     }
     
     .input-container {
-      margin-bottom: 25px;
+      margin-bottom: 10px;
+      position: relative;
     }
     
     .input-container label {
@@ -74,24 +76,67 @@
       color: #333;
       font-size: 16px;
     }
-    
-    textarea {
+
+    .input-field {
       width: 100%;
-      height: 200px;
-      padding: 15px;
+      padding: 10px 10px 10px 10px;
       border: 2px solid #e1e5ee;
       border-radius: 12px;
-      resize: none;
       font-size: 16px;
       transition: all 0.3s ease;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      background-color: #fff;
     }
     
-    textarea:focus {
+    .input-field:focus {
       outline: none;
       border-color: #4b6cb7;
       box-shadow: 0 6px 12px rgba(75, 108, 183, 0.15);
       transform: translateY(-2px);
+    }
+    
+    .input-icon {
+      position: absolute;
+      left: 15px;
+      top: 43px;
+      color: #4b6cb7;
+      font-size: 18px;
+    }
+    
+    textarea.input-field {
+      min-height: 150px;
+      resize: vertical;
+      /* padding: 15px; */
+    }
+    
+    .cc-container {
+      position: relative;
+    }
+    
+    #ccAddress {
+      min-height: 50px;
+      resize: vertical;
+      transition: all 0.3s ease;
+      line-height: 1.5;
+      overflow-wrap: break-word;
+      white-space: pre-wrap;
+    }
+    
+    .email-tag {
+      display: inline-block;
+      background: linear-gradient(to right, #e3f2fd, #bbdefb);
+      padding: 4px 10px;
+      border-radius: 15px;
+      margin: 3px;
+      font-size: 14px;
+      color: #1976d2;
+      border: 1px solid #90caf9;
+    }
+    
+    .email-tag .remove {
+      margin-left: 5px;
+      cursor: pointer;
+      font-weight: bold;
     }
     
     .button-container {
@@ -147,14 +192,6 @@
       margin-right: 8px;
     }
     
-    .date-display {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 14px;
-      color: #777;
-      font-weight: 500;
-    }
-    
     @keyframes fadeIn {
       from {
         opacity: 0;
@@ -184,20 +221,107 @@
         padding: 14px;
       }
     }
+
+    .info-icon-container {
+        position: relative;
+        display: inline-block;
+        margin-left: 8px;
+    }
+
+    .info-icon {
+        color: #4b6cb7;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .info-popup {
+        visibility: hidden;
+        opacity: 0;
+        width: 220px;
+        background-color: #4b6cb7;
+        color: white;
+        text-align: center;
+        border-radius: 8px;
+        padding: 10px;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        transform: translateX(-50%);
+        transition: opacity 0.3s, visibility 0.3s;
+        font-size: 14px;
+        line-height: 1.4;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .info-popup::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #4b6cb7 transparent transparent transparent;
+    }
+
+    .info-icon-container:hover .info-popup {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .label-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .date-display {
+        font-size: 14px;
+        color: #777;
+        font-weight: 500;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <!-- <i class="fas fa-clipboard-list"></i> -->
       <h2>Daily Work Report</h2>
       <p>Share your daily accomplishments with your team</p>
     </div>
     
     <div class="content">
       <div class="input-container">
+          <div class="label-row" style="margin-bottom: 0;">
+              <label for="toAddress"><i class="fas fa-envelope"></i> To Address</label>
+              <div class="date-display"  style="padding-bottom: 10px;" id="dateDisplay"></div>
+          </div>
+          <div>
+              <input type="email" id="toAddress" class="input-field" placeholder="Enter recipient's email address">
+          </div>
+      </div>
+      
+      <div class="input-container">
+          <label for="ccAddress">
+              <i class="fas fa-envelope-open-text"></i> CC Address
+              <span class="info-icon-container">
+                  <i class="fas fa-info-circle info-icon"></i>
+                  <div class="info-popup">
+                      You can enter multiple email addresses separated by commas.
+                  </div>
+              </span>
+          </label>
+          <div>
+              <textarea id="ccAddress" class="input-field" placeholder="Enter multiple CC addresses, separated by commas (optional)"></textarea>
+          </div>
+      </div>
+      
+      <div class="input-container">
         <label for="workPoints"><i class="fas fa-tasks"></i> Today's Work Items</label>
-        <textarea id="workPoints" placeholder="Enter each task or accomplishment on a new line..."></textarea>
+        <div>
+          <textarea id="workPoints" class="input-field" placeholder="Enter each task or accomplishment on a new line..."></textarea>
+        </div>
       </div>
       
       <div class="button-container">
@@ -205,55 +329,70 @@
           <i class="fas fa-paper-plane"></i> Send Report
         </button>
       </div>
-      
-      <div class="date-display" id="dateDisplay"></div>
-      
-      <!-- <div class="instructions">
-        <p><i class="fas fa-info-circle"></i> Each line will be converted into a bullet point</p>
-        <p><i class="fas fa-lightbulb"></i> Be specific about your accomplishments and progress</p>
-      </div> -->
     </div>
   </div>
-
   <script>
-    // Display today's date
     const today = new Date();
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     document.getElementById('dateDisplay').textContent = today.toLocaleDateString('en-US', options);
+
+    window.onload = function() {
+      document.getElementById('toAddress').value = localStorage.getItem("address1") || '';
+      let ccAddresses = [];
+      let i = 1;
+      while (localStorage.getItem("cc" + i)) {
+        ccAddresses.push(localStorage.getItem("cc" + i));
+        i++;
+      }
+      document.getElementById('ccAddress').value = ccAddresses.join(', ');
+    };
+
     function sendReport() {
       const today = new Date().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
       const subject = encodeURIComponent(`Work Report : ${today}`);
-
       const workLines = document.getElementById('workPoints').value
-          .split('\n')
-          .map(line => `• ${line}`)
-          .join('\n');
-
+        .split('\n')
+        .map(line => `• ${line}`)
+        .join('\n');
       const body = encodeURIComponent(`Work done:\n${workLines}`);
-      const to = "issacthampi005@gmail.com";
-      //const cc = ",";
-      //const bcc = "";
-      //const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&cc=${cc}&bcc=${bcc}&su=${subject}&body=${body}`;
 
+      const to = document.getElementById('toAddress').value.trim();
+      localStorage.setItem("address1", to);
+
+      let ccFieldValue = document.getElementById('ccAddress').value;
+      let ccArray = ccFieldValue
+        .split(',')
+        .map(addr => addr.trim())
+        .filter(addr => addr.length > 0);
+
+      let i = 1;
+      while (localStorage.getItem("cc" + i)) {
+        localStorage.removeItem("cc" + i);
+        i++;
+      }
+      ccArray.forEach((addr, idx) => {
+        localStorage.setItem("cc" + (idx + 1), addr);
+      });
+      const ccForMail = ccArray.join(',');
+      
+      const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&cc=${encodeURIComponent(ccForMail)}&su=${subject}&body=${body}`;
+      const mailtoUrl = `mailto:${encodeURIComponent(to)}${ccForMail ? '?cc=' + encodeURIComponent(ccForMail) : ''}&subject=${subject}&body=${body}`;
+      const gmailAppUrl = `googlegmail://co?to=${encodeURIComponent(to)}${ccForMail ? '&cc=' + encodeURIComponent(ccForMail) : ''}&subject=${subject}&body=${body}`;
       const userAgent = navigator.userAgent.toLowerCase();
       const isMobile = /mobi|android|iphone|ipad|ipod/.test(userAgent);
       const isAndroid = /android/.test(userAgent);
 
-      const gmailWebUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${to}&su=${subject}&body=${body}`;
-      const mailtoUrl = `mailto:${to}?subject=${subject}&body=${body}`;
-      const gmailAppUrl = `googlegmail://co?to=${to}&subject=${subject}&body=${body}`;
-
       if (isMobile) {
-          if (isAndroid) {
-              window.location.href = gmailAppUrl;
-              setTimeout(() => {
-                  window.location.href = mailtoUrl;
-              }, 1000);
-          } else {
-              window.location.href = mailtoUrl;
-          }
+        if (isAndroid) {
+          window.location.href = gmailAppUrl;
+          setTimeout(() => {
+            window.location.href = mailtoUrl;
+          }, 1000);
+        } else {
+          window.location.href = mailtoUrl;
+        }
       } else {
-          window.open(gmailWebUrl, '_blank');
+        window.open(gmailWebUrl, '_blank');
       }
     }
   </script>
